@@ -11,15 +11,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Todo'),
@@ -30,28 +21,48 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class Task {
+  final int id;
+  final String title;
+  final String status;
+  final bool favorite;
+
+  Task({this.id, this.title, this.status, this.favorite});
+}
+
 class _MyHomePageState extends State<MyHomePage> {
-  final List<String> tasks= <String>[
-    'Understand the Flutter ecosystem',
-    'Explore the potential of using Flutter SDK',
-    'Build the first Flutter app',
-    'Contribute in the Open Source community',
-  ];
+  final tasks= <int, Task>{
+    0: Task(
+      id: 1,
+      title: 'Understand the Flutter ecosystem',
+      status: 'in progress',
+      favorite: false,
+    ),
+    1: Task(
+      id: 2,
+      title: 'Explore the potential of using Flutter SDK',
+      status: 'in progress',
+      favorite: true,
+    ),
+    2: Task(
+      id: 3,
+      title: 'Build the first Flutter app',
+      status: 'in progress',
+      favorite: false,
+    ),
+    3: Task(
+      id: 4,
+      title: 'Contribute in the Open Source community',
+      status: 'complete',
+      favorite: false,
+    ),
+  };
 
   void addNewTask() {
 
@@ -59,25 +70,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: ListView.builder(
         itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text('${tasks[index]}'),
-            leading: Icon(Icons.check_box_outline_blank),
-            trailing: Icon(Icons.star),
+            title: Text('${tasks[index].title}'),
+              leading: TextButton(
+               style: TextButton.styleFrom(
+                 textStyle: const TextStyle(fontSize: 20),
+               ),
+               onPressed: () => {
+
+               },
+               child: Icon(tasks[index].status == 'complete' ? Icons.check_box : Icons.check_box_outline_blank),
+             ),
+            /* leading: Icon(tasks[index].status == 'complete' ? Icons.check_box_outline : Icons.check_box_outline_blank), */
+            trailing: TextButton(
+             style: TextButton.styleFrom(
+               textStyle: const TextStyle(fontSize: 20),
+             ),
+             onPressed: () => {
+
+             },
+             child: Icon(tasks[index].favorite == true ? Icons.star : Icons.star_border),
+           ),
           );
         }
       ),
